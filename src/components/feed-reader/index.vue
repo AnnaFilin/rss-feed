@@ -5,7 +5,7 @@
             <div class="sidebar">
                 <FeedList 
                     @onSelectFeed="handleSelectFeed"
-                    @onAddFeed="handleAddedFeed"
+                    
                     :feeds="feeds"
                 />
                 <AddFeed @onAddFeed="handleAddFeed"/>
@@ -29,6 +29,8 @@ import ArticlesList from './ArticlesList';
 import SingleArticle from './SingleArticle';
 import AddFeed from './AddFeed';
 
+import Parser from 'rss-parser';
+
 export default {
     components: {FeedList, ArticlesList, SingleArticle, AddFeed},
 
@@ -42,6 +44,10 @@ export default {
 
     created() {
         this.getFeeds();
+    },
+
+    mounted() {
+        this.handleAddFeed();
     },
 
     methods: {
@@ -59,15 +65,17 @@ export default {
             this.selectedArticle = article;
         },
 
-        handleAddFeed(newFeed) {
-            this.feeds.push(newFeed);
+        async handleAddFeed(newFeed) {
+            console.log(`This is the new url recieved from the user ${newFeed.feedUrl}`);
+
+            let parser = new Parser();
+            let feed =await parser.parseURL(newFeed.feedUrl);
+
+            console.log(feed.title);
+
+            this.feeds.push(feed);
         },
 
-        async handleAddedFeed(newFeed) {
-            let { data } = await axios.get(newFeed.feedUrl);
-
-            this.feeds.push(data);
-        },
     },
 }
 
