@@ -59,12 +59,19 @@
 <style>
     input {
         background: white;
+        border: solid 1px black;
         padding: 10px;
+        margin: 5px;
     }
 
     .add-feed {
         margin: 30px;
         background: blue;
+    }
+    .form-group {
+        display: grid;
+        grid-template-columns: 45% 45%;
+        grid-gap: 10px;
     }
 </style>
 
